@@ -17,6 +17,53 @@ export const adminRoute = new Elysia({ prefix: "/admin" })
     })
   )
 
+  // GET /admin/me - Ambil data admin yang sedang login (protected)
+  .get(
+    "/me",
+    async ({ jwt, set, headers }) => {
+      const authorization = headers.authorization;
+
+      if (!authorization || !authorization.startsWith("Bearer ")) {
+        set.status = 401;
+        return { message: "Token tidak ditemukan" };
+      }
+
+      const token = authorization.split(" ")[1];
+
+      const payload = await jwt.verify(token);
+
+      if (!payload) {
+        set.status = 401;
+        return { message: "Token tidak valid atau kadaluarsa" };
+      }
+
+      // Ambil data admin dari database (opsional, kalau mau data fresh)
+      const admin = await AdminService.getAdminById(payload.sub as string);
+
+      if (!admin) {
+        set.status = 404;
+        return { message: "Admin tidak ditemukan" };
+      }
+
+      return {
+        message: "Data admin berhasil diambil",
+        admin: {
+          id: admin.id,
+          username: admin.username,
+          created_at: admin.created_at,
+        } as AdminResponse,
+      };
+    },
+    {
+      detail: {
+        tags: ["Admin"],
+        summary: "Profil Admin",
+        description: "Mengambil data admin yang sedang login menggunakan JWT token",
+        security: [{ Bearer: [] }], // untuk Swagger/OpenAPI
+      },
+    }
+  )
+
   // POST admin register
   .post(
     "/register",

@@ -9,6 +9,12 @@ export const bookRoute = new Elysia({ prefix: "/books" })
     return Response.json(books);
   })
 
+  // GET /books/:id
+  .get("/:id", async ({ params }) => {
+    const book = await BookService.getBookById(params.id);
+    return Response.json(book);
+  })
+
   // POST /books
   .post(
     "/",

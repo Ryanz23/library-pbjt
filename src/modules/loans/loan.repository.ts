@@ -6,6 +6,7 @@ export const LoanRepository = {
         const loans = await db<Loan[]>`
           SELECT 
             l.id,
+            l.uuid,
             b.id AS book_id,
             b.title AS book_title,
             m.id AS member_id,
@@ -18,13 +19,24 @@ export const LoanRepository = {
           JOIN members m ON l.member_uuid = m.uuid
           ORDER BY l.loan_date DESC
         `;
-        return loans;
+        return loans.map(row => ({
+          id: row.id,
+          uuid: row.uuid,
+          book_id: row.book_id,
+          book_title: row.book_title,
+          member_id: row.member_id,
+          member_name: row.member_name,
+          quantity: row.quantity,
+          loan_date: row.loan_date,
+          return_date: row.return_date ?? null
+        }));
     },
 
-    async findById(id: string) {
+    async findById(id: string): Promise<Loan | null> {
         const result = await db`
           SELECT
-          l.id,
+            l.id,
+            l.uuid,
             b.id AS book_id,
             b.title AS book_title,
             m.id AS member_id,
@@ -37,7 +49,20 @@ export const LoanRepository = {
           JOIN members m ON l.member_uuid = m.uuid
           WHERE l.id = ${id}
         `;
-        return result[0] ?? null;
+        if (result.length === 0) return null;
+
+        const row = result[0];
+        return {
+          id: row.id,
+          uuid: row.uuid,
+          book_id: row.book_id,
+          book_title: row.book_title,
+          member_id: row.member_id,
+          member_name: row.member_name,
+          quantity: row.quantity,
+          loan_date: row.loan_date,
+          return_date: row.return_date ?? null
+        };
     },
 
     async create(trx: any, loan: CreateLoanDTO): Promise<string> {

@@ -7,6 +7,11 @@ export const LoanService = {
         return await LoanRepository.findAll();
     },
 
+    async getLoanById(id: string) {
+      const loan = await LoanRepository.findById(id);
+      return loan;
+    },
+
     async borrowBook(data: CreateLoanDTO) {
         if (data.quantity <= 0) {
             throw new Error("Jumlah pinjaman tidak valid");

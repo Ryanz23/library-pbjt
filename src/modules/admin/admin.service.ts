@@ -3,6 +3,16 @@ import bcrypt from "bcrypt";
 import { LoginAdminDTO, AdminResponse } from "./admin.model";
 
 export const AdminService = {
+    async getAdminById(id: string): Promise<AdminResponse | null> {
+      const result = await db<AdminResponse[]>
+      `
+       SELECT id, username, created_at
+       FROM admins
+       WHERE id = ${id}
+      `;
+      return result[0] || null;
+    },
+
     async login(data: LoginAdminDTO): Promise<AdminResponse | null> {
         const result = await db<(Pick<AdminResponse, "id" | "username" | "created_at"> & {password: string})[]>
         `

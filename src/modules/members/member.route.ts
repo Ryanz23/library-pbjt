@@ -9,9 +9,14 @@ export const memberRoute = new Elysia({ prefix: "/members" })
     return Response.json(members);
   })
 
+  // GET /members/:id
   .get("/:id", async ({ params }) => {
-    const member = await MemberService.getMemberById(params.id as string);
+    const member = await MemberService.getMemberById(params.id);
     return Response.json(member);
+  }, {
+    params: t.Object({
+      id: t.String({ minLength: 1 })
+    })
   })
 
   // POST /members

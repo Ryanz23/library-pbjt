@@ -25,6 +25,12 @@ export const loanRoute = new Elysia({ prefix: "/loans" })
     }
   })
 
+  // GET /loans/:id - Ambil detail pinjaman berdasarkan ID
+  .get("/:id", async ({ params }) => {
+    const loan = await LoanService.getLoanById(params.id);
+    return Response.json(loan);
+  })
+
   // POST /loans - Pinjam buku baru
   .post("/", async ({ body }) => {
     const result = await LoanService.borrowBook(body as CreateLoanDTO);
@@ -47,7 +53,7 @@ export const loanRoute = new Elysia({ prefix: "/loans" })
     return result;
   }, {
     params: t.Object({
-      id: t.String({ format: "uuid" })
+      id: t.String({ minLength: 1 })
     }),
     detail: {
       description: "Kembalikan buku (isi return_date + tambah stock)",
@@ -64,7 +70,7 @@ export const loanRoute = new Elysia({ prefix: "/loans" })
     return result;
   }, {
     params: t.Object({
-      id: t.String({ format: "uuid" })
+      id: t.String({ minLength: 1 })
     }),
     body: UpdateQuantityBody,
     detail: {
@@ -82,7 +88,7 @@ export const loanRoute = new Elysia({ prefix: "/loans" })
     return result;
   }, {
     params: t.Object({
-      id: t.String({ format: "uuid" })
+      id: t.String({ minLength: 1 })
     }),
     detail: {
       description: "Hapus data pinjaman (stock dikembalikan kalau belum return)",

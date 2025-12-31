@@ -65,40 +65,44 @@ bun run dev
 ## 📌 API Endpoints
 
 ### 📚 Books
-```bash
+```md
 | Method | Endpoint        | Description          |
 |--------|-----------------|----------------------|
 | GET    | `/books`        | Ambil semua buku     |
+| GET    | `/books/:id`    | Ambil buku (id)      |
 | POST   | `/books`        | Tambah buku          |
-| PUT    | `/books/:id`    | Update buku          |
-| DELETE | `/books/:id`    | Hapus buku           |
+| PUT    | `/books/:id`    | Update buku (id)     |
+| DELETE | `/books/:id`    | Hapus buku (id)      |
 ```
 
 ### 👤 Members
-```bash
-| Method | Endpoint        | Description          |
-|--------|-----------------|----------------------|
-| GET    | `/members`      | Ambil semua member   |
-| POST   | `/members`      | Tambah member        |
-| PUT    | `/members/:id`  | Update member        |
-| DELETE | `/members/:id`  | Hapus member         |
+```md
+| Method | Endpoint        | Description           |
+|--------|-----------------|-----------------------|
+| GET    | `/members`      | Ambil semua member    |
+| GET    | `/members/:id`  | Ambil member (id)     |
+| POST   | `/members`      | Tambah member         |
+| PUT    | `/members/:id`  | Update member (id)    |
+| DELETE | `/members/:id`  | Hapus member (id)     |
 ```
 
 ### 🔄 Loans
-```bash
-| Method | Endpoint        | Description          |
-|--------|-----------------|----------------------|
-| GET    | `/loans`        | Ambil semua data     |
-| POST   | `/loans`        | Tambah peminjaman    |
-| DELETE | `/loans/:id`    | Hapus peminjaman     |
+```md
+| Method | Endpoint        | Description           |
+|--------|-----------------|-----------------------|
+| GET    | `/loans`        | Ambil semua data      |
+| GET    | `/loans/:id`    | Ambil data (id)       |
+| POST   | `/loans`        | Tambah pinjaman       |
+| PUT    | `/loans/:id`    | Update pinjaman (id)  |
+| DELETE | `/loans/:id`    | Hapus pinjaman (id)   |
 ```
 
 ### 🔐 Admin
-```bash
-| Method | Endpoint           | Description       |
-|--------|--------------------|-------------------|
-| POST   | `/admins/register` | Tambah admin baru |
-| POST   | `/admins/login`    | Login admin       |
+```md
+| Method | Endpoint           | Description        |
+|--------|--------------------|--------------------|
+| POST   | `/admins/register` | Tambah admin baru  |
+| POST   | `/admins/login`    | Login admin        |
 ```
 
 ## 🧪 Testing (cURL)

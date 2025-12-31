@@ -6,6 +6,12 @@ export const BookService = {
         return await BookRepository.findAll();
     },
 
+    async getBookById(id: string) {
+        const book = await BookRepository.findById(id);
+        if (!book) throw new Error("Buku tidak ditemukan");
+        return book;
+    },
+
     async addBook(data: CreateBookDTO) {
         if (data.stock < 0) {
             throw new Error("Stock tidak boleh minus");
