@@ -11,10 +11,10 @@ export const BookRepository = {
   },
 
   async findById(id: string): Promise<Book | null> {
-    const result = await db<Book[]>`
+    const book = await db<Book[]>`
       SELECT * FROM books WHERE id = ${id}
     `;
-    return result[0] ?? null;
+    return book[0] ?? null;
   },
 
   async create(book: CreateBookDTO): Promise<void> {
