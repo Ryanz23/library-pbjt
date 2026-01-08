@@ -1,6 +1,7 @@
 import { db } from "../../config/db";
 import { CreateLoanDTO } from "./loan.model";
 import { LoanRepository } from "./loan.repository";
+import { AppError } from "../../handler/error";
 
 export const LoanService = {
   async getAllLoans() {
@@ -9,13 +10,15 @@ export const LoanService = {
 
   async getLoanById(id: string) {
     const loan = await LoanRepository.findById(id);
-    if (!loan) throw new Error("Data pinjaman tidak ditemukan");
+    if (!loan) {
+      throw new AppError("Data pinjaman tidak ditemukan", 404);
+    }
     return loan;
   },
 
   async borrowBook(data: CreateLoanDTO) {
     if (data.quantity <= 0) {
-      throw new Error("Jumlah pinjaman tidak valid");
+      throw new AppError("Jumlah pinjaman tidak valid", 400);
     }
 
     let loan_id = "";
@@ -50,8 +53,12 @@ export const LoanService = {
     },
   ) {
     const loan = await LoanRepository.findById(loan_id);
-    if (!loan) throw new Error("Data pinjaman tidak ditemukan");
-    if (loan.return_date) throw new Error("Pinjaman sudah dikembalikan");
+    if (!loan) {
+      throw new AppError("Data pinjaman tidak ditemukan" ,404);
+    }
+    if (loan.return_date) {
+      throw new AppError("Pinjaman sudah dikembalikan", 400);
+    }
 
     let safeBody = { ...body };
     if (body.loan_date) {
@@ -69,7 +76,9 @@ export const LoanService = {
 
   async deleteLoan(loan_id: string) {
     const loan = await LoanRepository.findById(loan_id);
-    if (!loan) throw new Error("Data pinjaman tidak ditemukan");
+    if (!loan) {
+      throw new AppError("Data pinjaman tidak ditemukan", 404);
+    }
 
     await db.begin(async (trx) => {
       if (!loan.return_date) {
