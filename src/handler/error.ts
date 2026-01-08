@@ -9,31 +9,29 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = new Elysia().onError(
-  ({ error, set }) => {
-    // Custom App Error
-    if (error instanceof AppError) {
-      set.status = error.status;
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
+export const errorHandler = new Elysia().onError(({ error, set }) => {
+  // Custom App Error
+  if (error instanceof AppError) {
+    set.status = error.status;
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
 
-    // Native Error
-    if (error instanceof Error) {
-        set.status = 500;
-        return {
-          success: false,
-          message: error.message,
-        };
-    }
-
-    // Fallback 
+  // Native Error
+  if (error instanceof Error) {
     set.status = 500;
     return {
       success: false,
-      message: "Internal server error",
+      message: error.message,
     };
   }
-);
+
+  // Fallback
+  set.status = 500;
+  return {
+    success: false,
+    message: "Internal server error",
+  };
+});

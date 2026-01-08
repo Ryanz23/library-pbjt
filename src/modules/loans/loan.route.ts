@@ -4,10 +4,10 @@ import { CreateLoanDTO } from "./loan.model";
 
 const CreateLoanBody = t.Object({
   book_id: t.String({
-    minLength: 1
+    minLength: 1,
   }),
   member_id: t.String({
-    minLength: 1
+    minLength: 1,
   }),
   quantity: t.Number({ minimum: 1 }),
   loan_date: t.Optional(t.String({ format: "date" })),
@@ -16,17 +16,15 @@ const CreateLoanBody = t.Object({
 const UpdateLoanBody = t.Object({
   book_id: t.Optional(
     t.String({
-      minLength: 1
+      minLength: 1,
     }),
   ),
   member_id: t.Optional(
     t.String({
-      minLength: 1
+      minLength: 1,
     }),
   ),
-  quantity: t.Optional(
-    t.Number({ minimum: 1 }),
-  ),
+  quantity: t.Optional(t.Number({ minimum: 1 })),
   loan_date: t.Optional(t.String({ format: "date" })),
 });
 

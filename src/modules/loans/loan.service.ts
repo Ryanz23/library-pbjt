@@ -54,7 +54,7 @@ export const LoanService = {
   ) {
     const loan = await LoanRepository.findById(loan_id);
     if (!loan) {
-      throw new AppError("Data pinjaman tidak ditemukan" ,404);
+      throw new AppError("Data pinjaman tidak ditemukan", 404);
     }
     if (loan.return_date) {
       throw new AppError("Pinjaman sudah dikembalikan", 400);
